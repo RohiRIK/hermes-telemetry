@@ -1560,7 +1560,7 @@ the real `~/.hermes/telemetry`. Enforced by
 
 ---
 
-### v0.8.0 — Agent intelligence (efficiency · smells · forecast, issue #8)
+### v0.8.0 — Agent intelligence (efficiency · smells · forecast, PR #40)
 
 - **`smell_detector.py`** (new module): five read-only anti-pattern heuristics
   over existing telemetry. See `§ Agent Intelligence`.

@@ -47,7 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the `:free`-vs-`_subscription` distinction (and the exact-id requirement for a
   `_subscription` declaration) in the README free-tier notice and ONBOARDING.
 
-### Added — Agent intelligence: efficiency scoring, smell detection, burn-rate forecasting (#8)
+### Added — Agent intelligence: efficiency scoring, smell detection, burn-rate forecasting (#40)
 
 Three read-only analytical capabilities over existing telemetry (no new capture,
 no schema change), each exposed through the slash command, the CLI, and both
