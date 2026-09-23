@@ -133,7 +133,7 @@ def _build_parser_into(sub) -> None:
         "--to",
         dest="date_to",
         type=_parse_date,
-        help="End date (ISO 8601, exclusive). Defaults to now.",
+        help="End date (ISO 8601, exclusive). Omit for no upper bound.",
     )
     sp.add_argument("--json", action="store_true", help="Output as JSON")
 
