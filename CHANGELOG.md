@@ -19,6 +19,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   for auditing `pricing.yaml` itself but are no longer required to keep costs
   accurate. See `ONBOARDING.md § Pricing Engine → Lookup priority chain`.
 
+### Fixed — Date-range label collapsed to "X to X" when only `--from` was given (#37)
+
+- `hermes-telemetry stats --from <date>` used to auto-fill the missing `--to`
+  with the current timestamp, so the rendered label read as a same-day range
+  (e.g. "2026-06-16 to 2026-06-16") instead of an open-ended one.
+  `_resolve_date_range` now leaves `date_to` as `None` when `--to` is
+  omitted, matching the label behavior the `/stats --from` slash command
+  already had. `stats._date_range_label` renders that case as `since <date>`.
+  The DB layer already treated a missing `date_to` as an unbounded upper
+  limit, so query results are unchanged — only the label and the JSON
+  `date_to` field (now `null` instead of an auto-filled timestamp) reflect
+  the real input.
+
 ## [0.8.0] - 2026-07-09
 
 ### Fixed — `/stats models` mislabeled known-free $0 rows as "no price entry"
