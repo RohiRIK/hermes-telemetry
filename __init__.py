@@ -758,6 +758,7 @@ def register(ctx) -> None:  # noqa: ANN001
     ctx.register_hook("pre_llm_call", pre_llm_call)
 
     if enforce_budget:
+
         def pre_tool_call(session_id: str = "", **_kw):
             try:
                 run = db.get_run(session_id)
@@ -767,7 +768,9 @@ def register(ctx) -> None:  # noqa: ANN001
                 budget.enforce_cron_pause(verdicts)
                 msg = budget.block_message_for(verdicts)
                 if msg:
-                    tele_log.warning("budget hard-block for session=%s: %s", session_id, msg)
+                    tele_log.warning(
+                        "budget hard-block for session=%s: %s", session_id, msg
+                    )
                     return {"action": "block", "message": msg}
             except Exception as exc:
                 tele_log.error("pre_tool_call (budget) hook failed: %s", exc)
