@@ -166,7 +166,8 @@ def register(ctx) -> None:  # noqa: ANN001
 
     from . import budget, core_pricing, db, moa, pricing, setup, stats
 
-    mode = ctx.get_config("mode", default="observe")
+    get_config = getattr(ctx, "get_config", None)
+    mode = get_config("mode", default="observe") if callable(get_config) else "observe"
     if mode not in {"observe", "enforce"}:
         tele_log.warning("invalid telemetry mode %r; falling back to observe", mode)
         mode = "observe"
@@ -768,9 +769,7 @@ def register(ctx) -> None:  # noqa: ANN001
                 budget.enforce_cron_pause(verdicts)
                 msg = budget.block_message_for(verdicts)
                 if msg:
-                    tele_log.warning(
-                        "budget hard-block for session=%s: %s", session_id, msg
-                    )
+                    tele_log.warning("budget hard-block for session=%s: %s", session_id, msg)
                     return {"action": "block", "message": msg}
             except Exception as exc:
                 tele_log.error("pre_tool_call (budget) hook failed: %s", exc)
