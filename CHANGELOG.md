@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — Observation-only telemetry mode (opt-in)
+
+- New plugin setting `plugins.entries.hermes-telemetry.settings.mode` with
+  choices `enforce` (default) and `observe`. Observation mode keeps collecting
+  and reporting telemetry but does not auto-create `budget.yaml`, inject budget
+  notices, block tools via `pre_tool_call`, or pause cron jobs. Existing
+  installs keep today's guardrails on upgrade: missing `mode`, invalid values,
+  and older Hermes hosts without `ctx.get_config` all resolve to `enforce`.
+  The budget file watcher still runs in both modes so `/budget` stays fresh.
+  When observe is active with a `budget.yaml` present, `/budget` and the
+  dashboard budget panel plainly say limits are **not enforced**.
+
 ### Changed — Core-sourced pricing snapshots are now the primary cost source
 
 - `estimate_cost()` now prefers the tariff Hermes core itself resolved for a
@@ -18,6 +30,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   unchanged. `hermes telemetry pricing drift`/`pricing backfill` remain useful
   for auditing `pricing.yaml` itself but are no longer required to keep costs
   accurate. See `ONBOARDING.md § Pricing Engine → Lookup priority chain`.
+### Added — Dashboard EN/RU language toggle (#92)
+
+- Standalone dashboard (`dashboard/index.html`) is EN-first with an EN↔RU toggle:
+  EN strings are the source of truth, `dashboard/i18n_ru.js` is the RU overlay
+  (one key per line, leaf text only), `dashboard/i18n.js` holds the shipped
+  `i18n_t`/`__DYN`/`__RU` logic shared by the page and `dashboard/i18n.test.js`.
+  Default `en` with `<html lang="en">`, `document.documentElement.lang` synced on
+  load and toggle, in-place re-render preserving drilldown/filters/scroll,
+  persistence key `hermes_telemetry_lang`. Status badge class resolves from the
+  raw value; EN path is identity, RU the only override. Known limitation: the
+  plugin widget (`dashboard/dist/index.js`) stays English.
 
 ### Fixed — Date-range label collapsed to "X to X" when only `--from` was given (#37)
 
